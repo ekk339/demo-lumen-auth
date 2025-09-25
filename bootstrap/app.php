@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -23,17 +23,9 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-$app->withFacades();
-$app->withEloquent();
+// $app->withFacades();
 
-/*
-|--------------------------------------------------------------------------
-| Manually bind the public path for nwidart/laravel-modules
-|--------------------------------------------------------------------------
-*/
-$app->bind('path.public', function () {
-    return base_path('public');
-});
+// $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -100,7 +92,7 @@ $app->configure('app');
 */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-$app->register(App\Providers\AuthServiceProvider::class);
+// $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*
@@ -114,39 +106,10 @@ $app->register(App\Providers\AuthServiceProvider::class);
 |
 */
 
-/*
-|--------------------------------------------------------------------------
-| CORS Middleware
-|--------------------------------------------------------------------------
-*/
-$app->configure('modules');
-$app->register(\Nwidart\Modules\LumenModulesServiceProvider::class);
-$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-
-$app->configure('auth');
-
-// $app->configure('jwt');
-// $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__ . '/../routes/web.php';
-    // Add this to load your module's routes
-    if (file_exists(__DIR__.'/../Modules/Login/Routes/web.php')) {
-        require __DIR__.'/../Modules/Login/Routes/web.php';
-    }
-
-      if (file_exists(__DIR__.'/../Modules/Auth/Routes/api.php')) {
-        require __DIR__.'/../Modules/Auth/Routes/api.php';
-    }
+    require __DIR__.'/../routes/web.php';
 });
-
-// User Module Routes
-// $router->group([
-//     'namespace' => 'Modules\Login\Http\Controllers'
-// ], function ($router) {
-//      require base_path('Modules/Login/Routes/web.php');
-// });
 
 return $app;
